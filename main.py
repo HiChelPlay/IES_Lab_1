@@ -1,11 +1,24 @@
+
+
+#from PySide import *
+
+from main2 import *
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = Menu()
+    window.show()
+    sys.exit(app.exec())
+
 def breadth_search(_start, _goal, _graph):
     _open = [_start]
     _closed = []
     _count = 0
 
-    while True:#_open != None:
+    while True:
+        print(_open)
         x = _open[0]
-        ++_count
+        _count += 1
         if x == _goal:
             return _count
         else:
@@ -23,28 +36,49 @@ def depth_search(_start, _goal, _graph):
     _count = 0
 
     while True:#_open != None:
+        print(_open)
         x = _open[0]
-        ++_count
+        _count += 1
         if x == _goal:
             return _count
-            print("TRUE")
         else:
             _open.remove(x)
             _closed.append(x)
             for i in _graph[x]:
                 if i not in _open and i not in _closed:
-                    _open.insert(0,i)
+                    _open.insert(0, i)
             #print(_open[0])
-    print("FALSE")
     return False
 
-while True:
-    try:
-        N = int(input("Введите количество вершин: "))  # Например, N = 5
-        break
-    except:
-        print("Вводимое значение должно быть числовым и целочисленным")
-_graph = {0: []}
+# def depth_search(_start, _goal, _graph):
+#     _open = [_start]  # Стек вершин для обработки
+#     _closed = set()   # Множество обработанных вершин
+#     _count = 0        # Счетчик шагов
+#
+#     while _open:  # Пока стек не пуст
+#         print("Открытый список:", _open)
+#         x = _open.pop(0)  # Берем вершину из начала стека
+#         _count += 1
+#
+#         if x == _goal:  # Если вершина - цель
+#             return _count  # Возвращаем количество шагов
+#
+#         _closed.add(x)  # Добавляем вершину в закрытый список
+#
+#         # Добавляем всех потомков вершины x в начало стека
+#         for neighbor in _graph[x]:
+#             if neighbor not in _open and neighbor not in _closed:
+#                 _open.insert(0, neighbor)  # Добавляем в начало стека
+#
+#     return False  # Цель не найдена
+
+# while True:
+#     try:
+#         N = int(input("Введите количество вершин: "))  # Например, N = 5
+#         break
+#     except:
+#         print("Вводимое значение должно быть числовым и целочисленным")
+_graph = {0: [1,3], 1: [2,0],  2: [], 3: [4], 4: []}
 # Создаем список смежности с динамическими списками
 #_graph = {i: [] for i in range(N)}  # Создаем граф с N вершинами
 #
@@ -80,3 +114,7 @@ print("Цель не найдена" if result == False else f"Цель найд
 
 
 #print(_graph)
+
+
+
+
