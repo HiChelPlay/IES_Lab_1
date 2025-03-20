@@ -8,6 +8,8 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from int import Ui_Dialog
 
+from main import *
+
 class Menu(QDialog):
     def __init__(self):
         super(Menu, self).__init__()
@@ -41,6 +43,47 @@ class Menu(QDialog):
 
         # Автоматическая подгонка ширины колонок
         self.ui.tableView.resizeColumnsToContents()
+
+        self.ui.FindBreadth.clicked.connect(self.get_values)
+        #self.ui.FindDepth.clicked.connect(self.get_values)
+
+        # startData = int(self.ui.Start.data())
+        # goalData = int(self.ui.Goal.data())
+
+
+
+
+
+
+    def get_values(self):
+        row_count = self.model.rowCount()
+        col_count = self.model.columnCount()
+
+        # Проходим по всем ячейкам и получаем их значения
+        for row in range(row_count):
+            for col in range(col_count):
+                index = self.model.index(row, col)  # Получаем индекс ячейки
+                value = int(self.model.data(index, Qt.DisplayRole))  # Получаем значение
+                if value == 1:
+                    main._graph[row].append(col)
+        #print(main._graph)
+
+        startData = int(self.ui.Start.data())
+        goalData = int(self.ui.Goal.data())
+        main.breadth_search(startData, goalData, main._graph)
+
+
+    # def get_values(self):
+    #     # Получаем количество строк и столбцов
+    #     row_count = self.model.rowCount()
+    #     col_count = self.model.columnCount()
+    #
+    #     # Проходим по всем ячейкам и получаем их значения
+    #     for row in range(row_count):
+    #         for col in range(col_count):
+    #             index = self.model.index(row, col)  # Получаем индекс ячейки
+    #             value = self.model.data(index, Qt.DisplayRole)  # Получаем значение
+    #             print(f"Ячейка [{row}, {col}]: {value}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
