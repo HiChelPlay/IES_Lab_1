@@ -1,14 +1,14 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QDialog, QComboBox, QDateEdit, QMainWindow, QTableView, QVBoxLayout, \
-    QWidget, QMessageBox, QAbstractItemView
+    QWidget, QMessageBox, QAbstractItemView, QPushButton, QGridLayout
 from PySide6.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 from PySide6.QtCore import QDate, Qt, QModelIndex, QTimer, QThread, Signal, QObject
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 import networkx as nx
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 from int import Ui_Dialog
 
@@ -75,6 +75,7 @@ def depth_search(_start, _goal, _graph):
     _checkUkaz = _goal
 
     while True:
+        print(_open)
         x = _open[0]
         if x == _goal:
             while _checkUkaz != _start: #Добавил 4
@@ -133,8 +134,8 @@ class Menu(QDialog):
         self.canvas = FigureCanvas(self.figure)
 
         # Установка фиксированного размера и позиции для canvas
-        self.canvas.setFixedSize(320, 320)  # Фиксированный размер
-        self.canvas.move(10, 32)  # Позиция (100, 300) относительно окна
+        self.canvas.setFixedSize(500, 300)  # Фиксированный размер
+        self.canvas.move(20, 20)  # Позиция (100, 300) относительно окна
 
         # Не добавляем canvas в layout, чтобы управлять его позицией вручную
         self.canvas.setParent(self)  # Устанавливаем окно как родителя для canvas
@@ -270,39 +271,32 @@ class Menu(QDialog):
         self.canvas.draw()
 
     def breadth(self):
-        try: #Добавление 1
-            start = int(self.ui.Start.text())
-            end = int(self.ui.Goal.text())
-            self.ui.StepsBreadth.setText(str(breadth_search(start, end, graph)))
-            self.ui.WayBreadth.setText(to_str(finish_breadth))
+        # try: #Добавление 1
+            start = int(self.ui.lineEdit.text())
+            end = int(self.ui.lineEdit_2.text())
+            self.ui.lineEdit_4.setText(str(breadth_search(start, end, graph)))
+            self.ui.lineEdit_3.setText(to_str(finish_breadth))
             finish_breadth.clear() #Изменение 1
-        except:
-            QMessageBox.warning(self, "Ошибка", "Введены неверные значения начальной и конечной точки!")
+        # except:
+        #     QMessageBox.warning(self, "Ошибка", "Введены неверные значения начальной и конечной точки!")
 
     def deapth(self):
         try: #Добавление 2
-            start = int(self.ui.Start.text())
-            end = int(self.ui.Goal.text())
-            self.ui.StepsDepth.setText(str(depth_search(start, end, graph)))
-            self.ui.WayDepth.setText(to_str(finish_deapth))
+            start = int(self.ui.lineEdit.text())
+            end = int(self.ui.lineEdit_2.text())
+            self.ui.lineEdit_6.setText(str(depth_search(start, end, graph)))
+            self.ui.lineEdit_5.setText(to_str(finish_deapth))
             finish_deapth.clear()
         except:
             QMessageBox.warning(self, "Ошибка", "Введены неверные значения начальной и конечной точки!")
 
     def clear(self):
-        for row in range(10):
-            for col in range(10):
-                item = QStandardItem('0')
-                self.model.setItem(row, col, item)
-
         finish_deapth = []
         finish_breadth = []
-        self.ui.WayBreadth.setText("")
-        self.ui.StepsBreadth.setText("")
-        self.ui.WayDepth.setText("")
-        self.ui.StepsDepth.setText("")
-        self.ui.Start.setText("")
-        self.ui.Goal.setText("")
+        self.ui.lineEdit_3.setText("")
+        self.ui.lineEdit_4.setText("")
+        self.ui.lineEdit_5.setText("")
+        self.ui.lineEdit_6.setText("")
 
     def paint(self):
         G = nx.Graph()
